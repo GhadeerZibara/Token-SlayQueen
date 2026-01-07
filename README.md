@@ -80,7 +80,7 @@ The `App` component combines all other components: `Header`, `Faucet`, `Balance`
 
 ---
 
-## Running Locally (Optional)
+## Running Locally
 
 To explore or test the token locally:
 
