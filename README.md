@@ -5,6 +5,11 @@
 This project implements a cryptocurrency token called **SlayQueen**, built to run on the **Internet Computer (ICP) blockchain**.  
 The token is implemented using **Motoko**, a programming language created by the DFINITY team specifically for writing smart contracts that run on ICP canisters.
 
+
+> **Note:** This project is designed specifically for the ICP blockchain, so there is no live demo available.  
+> You can explore the full codebase and run it locally using the DFX SDK if desired.
+
+
 ## Features
 
 The SlayQueen token provides the following functionality:
