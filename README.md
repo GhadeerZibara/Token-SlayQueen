@@ -1,51 +1,115 @@
-# token
 
-Welcome to your new token project and to the internet computer development community. By default, creating a new project adds this README and some template files to your project directory. You can edit these template files to customize your project and to include your own code to speed up the development cycle.
 
-To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
+# ICP Crypto Token Project — SlayQueen
 
-To learn more before you start working with token, see the following documentation available online:
+This project implements a cryptocurrency token called **SlayQueen**, built to run on the **Internet Computer (ICP) blockchain**.  
+The token is implemented using **Motoko**, a programming language created by the DFINITY team specifically for writing smart contracts that run on ICP canisters.
 
-- [Quick Start](https://sdk.dfinity.org/docs/quickstart/quickstart-intro.html)
-- [SDK Developer Tools](https://sdk.dfinity.org/docs/developers-guide/sdk-guide.html)
-- [Motoko Programming Language Guide](https://sdk.dfinity.org/docs/language-guide/motoko.html)
-- [Motoko Language Quick Reference](https://sdk.dfinity.org/docs/language-guide/language-manual.html)
-- [JavaScript API Reference](https://erxue-5aaaa-aaaab-qaagq-cai.raw.ic0.app)
+## Features
 
-If you want to start working on your project right away, you might want to try the following commands:
+The SlayQueen token provides the following functionality:
+
+- **Claim free tokens:** Each user can claim 10,000 SlayQueen (SQN) tokens once.  
+- **Check balance:** Users can query their current token balance.  
+- **Transfer tokens:** Users can transfer tokens to other accounts, with balances updated automatically.  
+
+These features demonstrate core blockchain concepts such as token state management, transfers, and user-specific balances.
+
+---
+
+## Tech Stack
+
+### Frontend
+- **React**: Used to build the user interface, including components like `Faucet`, `Balance`, and `Transfer`.  
+- **HTML & CSS**: Structure and styling for the frontend.  
+  
+
+### Backend
+- **Motoko**: Implements the smart contract logic for the token.  
+- **ICP Canisters**: Store the token state, handle transfers, and track balances.  
+- **DFX SDK**: Used for local development and canister deployment.  
+
+---
+
+## main.mo Overview
+
+The Motoko smart contract (`main.mo`) defines the core logic of the SlayQueen token:
+
+- **Owner & Total Supply**: The token has an initial total supply (1,000,000,000 SQN) assigned to the owner.  
+- **Balances**: Each user’s token balance is stored in a `HashMap`.  
+- **Queries**:
+  - `balanceOf(principal)` — Returns the token balance of a given user.  
+  - `getSymbol()` — Returns the token symbol ("SQN").  
+- **Shared Functions**:
+  - `payOut()` — Allows a user to claim 10,000 SQN tokens once. If already claimed, returns `"Already Claimed"`.  
+  - `transfer(to, amount)` — Transfers tokens to another account, updating balances. Returns `"Success"` or `"Insufficient Funds"`.  
+- **Upgrade Functions**:
+  - `preupgrade()` and `postupgrade()` — Save and restore balances during canister upgrades.  
+
+> This contract ensures that balances are tracked accurately and that token transfers and claims are handled securely on the ICP blockchain.
+
+
+## How it Works
+
+The SlayQueen token project consists of a React frontend that interacts with the Motoko smart contract canister.  
+
+### 1. App
+The `App` component combines all other components: `Header`, `Faucet`, `Balance`, and `Transfer`.
+
+### 2. Faucet
+- Users can claim their free **10,000 SQN tokens** by clicking the “Gimme gimme” button.  
+- Calls the `payOut()` function in the token canister.  
+- Updates the user’s balance and disables the button to prevent multiple claims.  
+
+### 3. Balance
+- Users enter a Principal ID to check the token balance.  
+- Calls the `balanceOf(principal)` function from the Motoko canister.  
+- Displays the current balance along with the token symbol.  
+
+### 4. Transfer
+- Users can send tokens to other accounts by entering the recipient’s Principal ID and the amount.  
+- Calls the `transfer(recipient, amount)` function in the canister.  
+- Updates balances for both sender and recipient.  
+- Displays feedback to indicate success or insufficient funds.
+
+### Overall Flow
+1. Claim free tokens using the Faucet component.  
+2. Check account balances with the Balance component.  
+3. Transfer tokens to other users via the Transfer component.  
+4. Frontend communicates asynchronously with the canister to ensure accurate updates of token balances on the blockchain.
+
+---
+
+## Running Locally (Optional)
+
+To explore or test the token locally:
 
 ```bash
-cd token/
-dfx help
-dfx config --help
-```
-
-## Running the project locally
-
-If you want to test your project locally, you can use the following commands:
-
-```bash
-# Starts the replica, running in the background
+# Start the local Internet Computer replica
 dfx start --background
 
-# Deploys your canisters to the replica and generates your candid interface
+# Deploy the token canister
 dfx deploy
+
 ```
 
-Once the job completes, your application will be available at `http://localhost:8000?canisterId={asset_canister_id}`.
+---
 
-Additionally, if you are making frontend changes, you can start a development server with
+## License 
+Copyright 2022 London App Brewery LTD (www.appbrewery.com)
 
-```bash
-npm start
-```
+Copyright 2026 Ghadeer Zibara
 
-Which will start a server at `http://localhost:8080`, proxying API requests to the replica at port 8000.
+This project is licensed under the [Apache License 2.0]
+You may obtain a copy of the License at
 
-### Note on frontend environment variables
+    http://www.apache.org/licenses/LICENSE-2.0
 
-If you are hosting frontend code somewhere without using DFX, you may need to make one of the following adjustments to ensure your project does not fetch the root key in production:
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
-- set`NODE_ENV` to `production` if you are using Webpack
-- use your own preferred method to replace `process.env.NODE_ENV` in the autogenerated declarations
-- Write your own `createActor` constructor
+Here is the TL;DR version of the above licence:
+https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)
